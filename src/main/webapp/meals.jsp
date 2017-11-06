@@ -17,7 +17,6 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Date/Time</th>
             <th>Description</th>
             <th>Calories</th>
@@ -26,13 +25,12 @@
         <tbody>
         <c:forEach items="${meals}" var="meal">
             <tr <c:out value="${meal.exceed ? 'class=danger' : 'class=success'}" />>
-                <td><c:out value="${meal.mealid}" /></td>
                 <td>${f:formatLocalDateTime(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
                 <td><c:out value="${meal.description}" /></td>
                 <td><c:out value="${meal.calories}" /> </td>
                 <td>
-                    <a class="btn btn-default glyphicon glyphicon-remove pull-right" href="meals?action=delete&mealid=<c:out value="${meal.mealid}"/>"></a>
-                    <a class="btn btn-default glyphicon glyphicon-pencil pull-right" href="meals?action=edit&mealid=<c:out value="${meal.mealid}"/>"></a>
+                    <a class="btn btn-default glyphicon glyphicon-remove pull-right" href="meals?action=delete&id=<c:out value="${meal.id}"/>"></a>
+                    <a class="btn btn-default glyphicon glyphicon-pencil pull-right" href="meals?action=edit&id=<c:out value="${meal.id}"/>"></a>
                 </td>
             </tr>
         </c:forEach>

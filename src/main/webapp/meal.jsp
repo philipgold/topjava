@@ -17,12 +17,7 @@
     <h3><a href="meals?action=list">Meals</a></h3>
     <h2>Add new meal</h2>
     <form class="form-horizontal" method="POST" action='meals' name="frmAddMeal">
-        <div class="form-group">
-            <label for="inputMealId" class="col-sm-2 control-label">ID</label>
-            <div class="col-sm-10">
-                <input type="text" readonly="readonly" class="form-control" id="inputMealId" name="inputMealId" placeholder="ID" value="<c:out value="${meal.mealid}"/>">
-            </div>
-        </div>
+        <input type="hidden" readonly="readonly" class="form-control" id="inputMealId" name="inputMealId" placeholder="ID" value="<c:out value="${meal.id}"/>">
         <div class="form-group">
             <label for="inputDateTime" class="col-sm-2 control-label">Date Time</label>
             <div class="col-sm-10">

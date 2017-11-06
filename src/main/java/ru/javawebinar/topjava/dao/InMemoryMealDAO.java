@@ -1,10 +1,8 @@
 package ru.javawebinar.topjava.dao;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,36 +16,32 @@ public class InMemoryMealDAO implements MealDAO {
     }
 
     @Override
-    public boolean deleteMeal(int mealId) {
+    public void delete(int mealId) {
        meals.remove(mealId);
-       return true;
     }
 
     @Override
-    public int insertMeal(LocalDateTime dateTime, String description, int calories) {
+    public int insert(Meal meal) {
         int id = getNextId();
-        meals.put(id, new Meal(id, dateTime, description, calories));
+        meals.put(id, new Meal(id, meal.getDateTime(), meal.getDescription(), meal.getCalories()));
         return id;
     }
 
     @Override
-    public boolean updateMeal(int mealId, LocalDateTime dateTime, String description, int calories) {
-        if (meals.containsKey(mealId)){
-            meals.put(mealId, new Meal(mealId, dateTime, description, calories));
-            return true;
-        }else
-            return false;
+    public void update(Meal meal) {
+        if (meals.containsKey(meal.getId())){
+            meals.put(meal.getId(), new Meal(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories()));
+        }
     }
 
     @Override
-    public Meal getMealId(int mealId) {
+    public Meal getById(int mealId) {
         return meals.get(mealId);
     }
 
     @Override
-    public Collection getMealsWithExceeded() {
-        List<Meal> list = new ArrayList<>(meals.values());
-        return MealsUtil.getFilteredWithExceeded(list, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+    public Collection getList() {
+        return new ArrayList<>(meals.values());
     }
 
 private ConcurrentHashMap<Integer,Meal> initializeMeals(){

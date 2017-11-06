@@ -20,6 +20,9 @@ public class TimeUtil {
     </a>
      */
     public static String formatLocalDateTime(LocalDateTime localDateTime, String pattern) {
-        return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
+        if (localDateTime != null)
+            return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
+        else
+            return "";
     }
 }

@@ -20,7 +20,13 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
-    <a href="meals?action=create">Add Meal</a>
+    <a>Select a user:</a>
+    <select name="user">
+        <c:forEach items="${users}" var="user">
+            <option value="${user.id}"><c:out value="${user.name}" /></option>
+        </c:forEach>
+    </select>
+    <p></p><a href="meals?action=create">Add Meal</a>
     <hr/>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>

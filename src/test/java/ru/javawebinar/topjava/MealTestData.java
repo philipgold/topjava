@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava;
 
+import org.assertj.core.api.SoftAssertions;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 
@@ -17,14 +18,15 @@ public class MealTestData {
     public static final Meal ADMIN_MEAL_DINNER = new Meal(ADMIN_MEAL_DINNER_ID, DateTimeUtil.parseLocalDateTime("2015-06-01 21:00:00"), "Админ ужин", 1500);
 
     public static void assertMatch(Meal actual, Meal expected) {
-        assertThat(actual).isEqualTo(expected);
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+        softly.assertThat(actual.getCalories()).isEqualTo(expected.getCalories());
+        softly.assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
+        softly.assertThat(actual.getDateTime()).isEqualTo(expected.getDateTime());
+        softly.assertAll();
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
-        assertMatch(actual, Arrays.asList(expected));
-    }
-
-    public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).containsOnly(expected);
     }
 }

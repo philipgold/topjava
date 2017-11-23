@@ -1,5 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb0cd1a66fff47a1ba233e3838505f15)](https://www.codacy.com/app/philipgold/topjava?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=philipgold/topjava&amp;utm_campaign=Badge_Grade) 
 [![Dependency Status](https://www.versioneye.com/user/projects/5a16cdf20fb24f213f8d557f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5a16cdf20fb24f213f8d557f)
+[![Build Status](https://travis-ci.org/philipgold/topjava.svg?branch=master)](https://travis-ci.org/philipgold/topjava)
 
 Java Enterprise Online Project 
 ===============================

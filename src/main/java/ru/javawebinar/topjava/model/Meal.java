@@ -8,6 +8,7 @@ import java.time.*;
 
 @NamedQueries(value = {
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.dateTime=:dateTime, m.description=:description, m.calories=:calories WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.BY_USER_ID, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.ALL_BETWEEN_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate  AND :endDate ORDER BY m.dateTime DESC")
@@ -20,6 +21,7 @@ public class Meal extends AbstractBaseEntity {
     public static final String BY_USER_ID = "Meal.getByUserId";
     public static final String ALL_SORTED = "Meal.getAllSorted";
     public static final String ALL_BETWEEN_SORTED = "Meal.getBetweenAllSorted";
+    public static final String UPDATE = "Meal.update";
 
     @Column(name = "date_time", nullable = false, columnDefinition = "date time when an user eat")
     @NotNull

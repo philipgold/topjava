@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.AssumptionViolatedException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +17,6 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
-import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -36,11 +36,14 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static StringBuilder watchedLog = new StringBuilder();
+    private static long totalSpentTime = 0;
 
     private static void logInfo(Description description, String status, long nanos) {
         String testName = description.getMethodName();
-        log.info(String.format("Test %s %s, spent %d milliseconds",
+        watchedLog.append(String.format("\n Test %s %s, spent %d milliseconds",
                 testName, status, TimeUnit.NANOSECONDS.toMillis(nanos)));
+        totalSpentTime += nanos;
     }
 
     @Rule
@@ -62,6 +65,12 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    @AfterClass
+    public static void displaySummary() {
+        log.info(watchedLog.toString() + "\n ==============" +
+        String.format("\n Total spent %d seconds", TimeUnit.NANOSECONDS.toSeconds(totalSpentTime)));
+    }
 
     @Test
     @Transactional

@@ -39,22 +39,12 @@ public class MealServiceTest {
 
     private static void logInfo(Description description, String status, long nanos) {
         String testName = description.getMethodName();
-        log.info(String.format("Test %s %s, spent %d microseconds",
-                testName, status, TimeUnit.NANOSECONDS.toMicros(nanos)));
+        log.info(String.format("Test %s %s, spent %d milliseconds",
+                testName, status, TimeUnit.NANOSECONDS.toMillis(nanos)));
     }
 
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void succeeded(long nanos, Description description) {
-            logInfo(description, "succeeded", nanos);
-        }
-
-        @Override
-        protected void failed(long nanos, Throwable e, Description description) {
-            logInfo(description, "failed", nanos);
-        }
-
         @Override
         protected void skipped(long nanos, AssumptionViolatedException e, Description description) {
             logInfo(description, "skipped", nanos);

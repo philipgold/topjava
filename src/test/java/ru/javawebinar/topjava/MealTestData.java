@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava;
 
 import org.assertj.core.api.SoftAssertions;
-import org.hamcrest.CoreMatchers;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.Month;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {

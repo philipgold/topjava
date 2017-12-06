@@ -11,7 +11,6 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Profile(Profiles.DATAJPA)
 @Transactional(readOnly = true)
@@ -26,7 +25,7 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Transactional
     Meal save(Meal meal);
 
-    Optional<Meal> findByIdAndUserId(int id, int userId);
+    Meal findByIdAndUserId(int id, int userId);
 
     List<Meal> findAllByUserIdOrderByDateTimeDesc(int userId);
 

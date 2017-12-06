@@ -11,36 +11,6 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-
-    <tx:annotation-driven/>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:dataSource-ref="dataSource"
-          p:packagesToScan="ru.javawebinar.**.model">
-        <!--p:persistenceUnitName="persistenceUnit">-->
-
-        <property name="jpaPropertyMap">
-            <map>
-                <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
-                <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
-                <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->
-            </map>
-        </property>
-
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-                  p:showSql="${jpa.showSql}">
-            </bean>
-        </property>
-    </bean>
-
-    <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
-    <!--Using by JDBC and DATA JPA-->
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
-          p:entityManagerFactory-ref="entityManagerFactory"/>
-
-
-
     <beans profile="hsqldb">
         <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
@@ -85,11 +55,40 @@
     </beans>
 
     <beans profile="jpa">
-        <!--<context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>-->
+        <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
     </beans>
 
     <beans profile="datajpa">
         <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
         <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
+    </beans>
+
+    <beans profile="jpa, datajpa">
+        <tx:annotation-driven/>
+
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+              p:dataSource-ref="dataSource"
+              p:packagesToScan="ru.javawebinar.**.model">
+            <!--p:persistenceUnitName="persistenceUnit">-->
+
+            <property name="jpaPropertyMap">
+                <map>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
+                    <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->
+                </map>
+            </property>
+
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                      p:showSql="${jpa.showSql}">
+                </bean>
+            </property>
+        </bean>
+
+        <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+        <!--Using by JDBC and DATA JPA-->
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+              p:entityManagerFactory-ref="entityManagerFactory"/>
     </beans>
 </beans>

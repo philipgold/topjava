@@ -42,7 +42,6 @@ public class JspMealController extends AbstractMealController {
 
     @PostMapping
     protected String doPost(HttpServletRequest request) throws IOException {
-        request.setCharacterEncoding("UTF-8");
 
         String sId = request.getParameter("id");
         Meal meal = new Meal(

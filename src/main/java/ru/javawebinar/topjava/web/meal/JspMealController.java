@@ -19,23 +19,22 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 @Controller
 public class JspMealController extends AbstractMealController {
 
-    private int getId(String id) {
-        String paramId = Objects.requireNonNull(id);
-        return Integer.parseInt(paramId);
-    }
-
     @GetMapping("/meals")
     protected String doGet(Model model){
         model.addAttribute("meals", super.getAll());
         return "meals";
     }
 
-    @GetMapping({"/meals/new", "/meals/edit/{id}"})
-    protected String doGetById(Model model, @PathVariable (required = false) String id ){
+    @GetMapping("/meals/edit/{id}")
+    protected String openExistingMeal(Model model, @PathVariable String id ){
+        final Meal meal = super.get(getId(id));
+        model.addAttribute("meal", meal);
+        return  "mealForm";
+    }
 
-        final Meal meal = Objects.isNull(id) ?
-                new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                super.get(getId(id));
+    @GetMapping({"/meals/new"})
+    protected String openNewMeal(Model model){
+        final Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
         model.addAttribute("meal", meal);
         return  "mealForm";
     }

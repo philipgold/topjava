@@ -5,16 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +29,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired (required = false)
     protected JpaUtil jpaUtil;
 
-    @Autowired
-    private Environment environment;
 
     @Before
     public void setUp() throws Exception {
@@ -43,10 +38,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
             jpaUtil.clear2ndLevelHibernateCache();
         }
 
-    }
-
-    private boolean isNotJdbcProfile(){
-        return Arrays.stream(environment.getActiveProfiles()).allMatch(p -> !p.toLowerCase().contains(Profiles.JDBC));
     }
 
     @Test

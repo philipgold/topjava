@@ -3,15 +3,12 @@ package ru.javawebinar.topjava.service;
 import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 
 import static java.time.LocalDateTime.of;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -22,13 +19,6 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected MealService service;
-
-    @Autowired
-    private Environment environment;
-
-    private boolean isNotJdbcProfile(){
-        return Arrays.stream(environment.getActiveProfiles()).allMatch(p -> !p.toLowerCase().contains(Profiles.JDBC));
-    }
 
     @Test
     public void delete() throws Exception {

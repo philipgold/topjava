@@ -57,6 +57,12 @@
         <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
             <constructor-arg ref="dataSource"/>
         </bean>
+
+        <!-- Creating TransactionManager Bean, since JDBC we are creating of type DataSourceTransactionManager -->
+        <bean id="transactionManager"
+              class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="dataSource" />
+        </bean>
     </beans>
 
     <beans profile="jpa,datajpa">
@@ -93,13 +99,15 @@
             </property>
         </bean>
 
-        <tx:annotation-driven/>
-
         <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
-        <bean class="ru.javawebinar.topjava.repository.JpaUtil"/>
+        <bean class="ru.javawebinar.topjava.repository.JpaUtil" />
+    </beans>
+
+    <beans profile="jpa,datajpa, jdbc">
+        <tx:annotation-driven/>
     </beans>
 
     <beans profile="jpa">

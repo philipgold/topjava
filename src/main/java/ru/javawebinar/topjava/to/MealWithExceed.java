@@ -1,10 +1,13 @@
 package ru.javawebinar.topjava.to;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class MealWithExceed {
     private final Integer id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime dateTime;
 
     private final String description;

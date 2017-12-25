@@ -1,15 +1,17 @@
 package ru.javawebinar.topjava.web.meal;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.web.format.LocalDateFormat;
+import ru.javawebinar.topjava.web.format.LocalTimeFormat;
 
 import java.net.URI;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -23,7 +25,7 @@ public class MealRestController extends AbstractMealController {
 
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Meal get(@PathVariable("id") int id){return super.get(id);}
+    public Meal get(@PathVariable("id") int id){ return super.get(id);}
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@RequestBody Meal meal){
@@ -43,10 +45,11 @@ public class MealRestController extends AbstractMealController {
     public void update (@RequestBody Meal meal, @PathVariable("id") int id) {super.update(meal, id);}
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/filter")
-    public List<MealWithExceed> getBetween(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                           @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime  endDate,
-                                           @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)  LocalDateTime  startTime,
-                                           @RequestParam("endTime")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
-        return super.getBetween(startDate.toLocalDate(), startTime.toLocalTime(), endDate.toLocalDate(), endTime.toLocalTime());
+    public List<MealWithExceed> getBetween(
+            @RequestParam(value = "startDate", required = false) @LocalDateFormat() LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @LocalDateFormat() LocalDate endDate,
+            @RequestParam(value = "startTime", required = false) @LocalTimeFormat() LocalTime startTime,
+            @RequestParam(value = "endTime", required = false)  @LocalTimeFormat() LocalTime endTime) {
+        return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }

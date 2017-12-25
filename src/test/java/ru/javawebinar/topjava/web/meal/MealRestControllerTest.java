@@ -6,7 +6,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.to.DatesForm;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
@@ -79,14 +78,16 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetBetween() throws Exception{
-        DatesForm datesForm = new DatesForm(LocalDate.of(2015, Month.MAY, 30),
-                LocalDate.of(2015, Month.MAY, 30), null, null);
         TestUtil.print(mockMvc.perform(post(REST_URL + "/filter")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonUtil.writeValue(datesForm))))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(MEAL3, MEAL2, MEAL1));
-    }
+                .contentType(MediaType.APPLICATION_JSON)
+				.param("startDate", LocalDate.of(2015, Month.MAY, 30).atStartOfDay().toString())
+				.param("endDate", LocalDate.of(2015, Month.MAY, 30).atStartOfDay().toString())
+				.param("startTime", "")
+				.param("endTime", "")
+		))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(contentJson(MEAL3, MEAL2, MEAL1));
+	}
 }

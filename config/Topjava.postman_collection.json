@@ -1,0 +1,95 @@
+{
+	"info": {
+		"name": "Topjava",
+		"_postman_id": "45794413-7b52-2259-d7f9-f231e0e2738f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "MealRestController",
+			"description": "",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/topjava/rest/meals/100002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"topjava",
+								"rest",
+								"meals",
+								"100002"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/topjava/rest/meals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"topjava",
+								"rest",
+								"meals"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "getBetween",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"startDate\"=\"[2015-05-30]\", \"endDate\"=\"[2015-05-30]\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/topjava/rest/meals/filter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"topjava",
+								"rest",
+								"meals",
+								"filter"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

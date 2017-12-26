@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -81,11 +82,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
         TestUtil.print(mockMvc.perform(post(REST_URL + "/filter")
                 .contentType(MediaType.APPLICATION_JSON)
 				.param("startDate", LocalDate.of(2015, Month.MAY, 30).toString())
+                .param("startTime", LocalTime.of(9, 0).toString())
+                .param("endTime", LocalTime.of(14, 0).toString())
 				.param("endDate", LocalDate.of(2015, Month.MAY, 30).toString())
 		))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(contentJson(MEAL3, MEAL2, MEAL1));
+				.andExpect(contentJson(MEAL2, MEAL1));
 	}
 }

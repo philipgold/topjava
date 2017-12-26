@@ -35,7 +35,7 @@
 
                 <!--LocalTime formatter-->
                 <bean class="ru.javawebinar.topjava.web.format.LocalTimeFormatter">
-                    <constructor-arg value=""/>
+                    <constructor-arg value="HH:mm"/>
                 </bean>
                 <bean class="ru.javawebinar.topjava.web.format.LocalTimeFormatAnnotationFormatterFactory"/>
             </set>

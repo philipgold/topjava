@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 
     <!-- To enable JMX Management -->
@@ -21,7 +22,8 @@
     </appender>
 
     <logger name="ru.javawebinar.topjava" level="debug"/>
-    <logger name="org.springframework.web" level="debug"/>
+    <!--<logger name="org.springframework.web.servlet" level="debug"/>-->
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>

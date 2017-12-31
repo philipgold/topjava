@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/ajax/admin/users")
@@ -33,5 +34,16 @@ public class AdminAjaxController extends AbstractUserController {
         if (user.isNew()) {
             super.create(user);
         }
+    }
+
+    @PutMapping("/{id}")
+    public void updateById(@PathVariable("id") int id,
+                           @RequestParam(value = "enabled", required = false) Boolean enabled) {
+
+        User user = super.get(id);
+        if (Objects.nonNull(enabled) && user.isEnabled()!= enabled) {
+            user.setEnabled(enabled);
+        }
+        super.update(user, id);
     }
 }

@@ -31,6 +31,10 @@ header, footer {
     margin: 6px 0;
 }
 
+.disabled {
+    opacity: 0.3;
+}
+
 .glyphicon {
     cursor: pointer;
 }

@@ -1,6 +1,22 @@
 var ajaxUrl = "ajax/admin/users/";
 var datatableApi;
 
+function enable(chkbox, id) {
+    var enabled = chkbox.is(":checked");
+    $.ajax({
+        url: ajaxUrl + id,
+        type: "PUT",
+        data: "enabled=" + enabled,
+        success: function () {
+            chkbox.closest("tr").toggleClass("disabled");
+            successNoty(enabled ? "common.enabled" : "common.disabled");
+        },
+        error: function () {
+            $(chkbox).prop("checked", !enabled);
+        }
+    });
+}
+
 // $(document).ready(function () {
 $(function () {
     datatableApi = $("#datatable").DataTable({
@@ -17,7 +33,13 @@ $(function () {
                 "data": "roles"
             },
             {
-                "data": "enabled"
+                "data": "enabled",
+                "render": function (data, type, row) {
+                    if (type === "display") {
+                        return "<input type='checkbox' " + (data ? "checked" : "") + " onclick='enable($(this)," + row.DT_RowId + ");'/>";
+                    }
+                    return data;
+                }
             },
             {
                 "data": "registered"
@@ -36,7 +58,12 @@ $(function () {
                 0,
                 "asc"
             ]
-        ]
+        ],
+        "createdRow": function (row, data, dataIndex) {
+            if (!data.enabled) {
+                $(row).addClass("disabled");
+            }
+        }
     });
     makeEditable();
 });

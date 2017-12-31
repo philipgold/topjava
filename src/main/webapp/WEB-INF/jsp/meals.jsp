@@ -13,53 +13,68 @@
     <div class="container">
         <h3><spring:message code="meal.title"/></h3>
         <br/>
-        <form method="post" action="meals/filter">
-            <dl>
-                <dt><spring:message code="meal.startDate"/>:</dt>
-                <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.endDate"/>:</dt>
-                <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.startTime"/>:</dt>
-                <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.endTime"/>:</dt>
-                <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
-            </dl>
-            <button type="submit"><spring:message code="meal.filter"/></button>
-        </form>
-
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form id="filtersForm" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="startDate"><spring:message code="meal.startDate"/>:</label>
+                                <div class="col-sm-3">
+                                        <input class="form-control" name="startDate" id="startDate" value="${param.startDate}">
+                                </div>
+                                <label class="control-label col-sm-4" for="startTime"><spring:message code="meal.startTime"/>:</label>
+                                <div class="col-sm-2">
+                                        <input class="form-control" name="startTime" id="startTime" value="${param.startTime}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="endDate"><spring:message code="meal.endDate"/>:</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" name="endDate" id="endDate" value="${param.endDate}">
+                                </div>
+                                <label class="control-label col-sm-4" for="endTime"><spring:message code="meal.endTime"/>:</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control" name="endTime" id="endTime" value="${param.endTime}">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a class="btn btn-primary" type="button" onclick="updateTable()">
+                            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <a class="btn btn-primary" onclick="add()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             <spring:message code="meal.add"/>
         </a>
         <table class="table table-striped display" id="datatable">
-            <thead>
-            <tr>
-                <th><spring:message code="meal.dateTime"/></th>
-                    <th><spring:message code="meal.description"/></th>
-                <th><spring:message code="meal.calories"/></th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <c:forEach items="${meals}" var="meal">
-                <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
-                <tr id="${meal.id}" class="${meal.exceed ? 'exceeded' : 'normal'}">
-                    <td>
-                            ${fn:formatDateTime(meal.dateTime)}
-                    </td>
-                    <td>${meal.description}</td>
-                    <td>${meal.calories}</td>
-                    <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-                    <td><a class="delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                <thead>
+                <tr>
+                    <th><spring:message code="meal.dateTime"/></th>
+                        <th><spring:message code="meal.description"/></th>
+                    <th><spring:message code="meal.calories"/></th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            </c:forEach>
-        </table>
+                </thead>
+                <c:forEach items="${meals}" var="meal">
+                    <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
+                    <tr id="${meal.id}" class="${meal.exceed ? 'exceeded' : 'normal'}">
+                        <td>
+                                ${fn:formatDateTime(meal.dateTime)}
+                        </td>
+                        <td>${meal.description}</td>
+                        <td>${meal.calories}</td>
+                        <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                        <td><a class="delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                    </tr>
+                </c:forEach>
+            </table>
     </div>
 </div>
 <div class="modal fade" id="editRow">
@@ -74,15 +89,15 @@
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="dateTime" class="control-label col-xs-3"><spring:message code="meal.dateTime"/></label>
+                        <label for="dateTime" class="control-label col-xs-3"><spring:message code="meal.dateTime"/>:</label>
 
                         <div class="col-xs-9">
-                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" placeholder="<spring:message code="meal.dateTime"/>" required >
+                            <input class="form-control" id="dateTime" name="dateTime" placeholder="<spring:message code="meal.dateTime"/>" required >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="description" class="control-label col-xs-3"><spring:message code="meal.description"/></label>
+                        <label for="description" class="control-label col-xs-3"><spring:message code="meal.description"/>:</label>
 
                         <div class="col-xs-9">
                             <input type="text" class="form-control" id="description" name="description" placeholder="<spring:message code="meal.description"/>" required >
@@ -93,7 +108,7 @@
                         <label for="calories" class="control-label col-xs-3"><spring:message code="meal.calories"/></label>
 
                         <div class="col-xs-9">
-                            <input type="number" class="form-control" id="calories" name="calories" placeholder="<spring:message code="meal.calories"/>" required >
+                            <input type="number" class="form-control" id="calories" name="calories" placeholder="1000" required >
                         </div>
                     </div>
 

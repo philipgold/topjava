@@ -81,6 +81,11 @@ function updateTable() {
     });
 }
 
+function clearFilter() {
+    $("#filtersForm")[0].reset();
+    $.get(ajaxUrl, updateTableByData);
+}
+
 function filterRows(startDate, endDate, startTime, endTime) {
     $.ajax({
         url: ajaxUrl + "filter",

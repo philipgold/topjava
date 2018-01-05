@@ -4,9 +4,8 @@ var datatableApi;
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
     $.ajax({
-        url: ajaxUrl + id,
+        url: ajaxUrl + id +"?enabled=" + enabled,
         type: "PUT",
-        data: "enabled=" + enabled,
         success: function () {
             chkbox.closest("tr").toggleClass("disabled");
             successNoty(enabled ? "common.enabled" : "common.disabled");
@@ -36,7 +35,7 @@ $(function () {
                 "data": "enabled",
                 "render": function (data, type, row) {
                     if (type === "display") {
-                        return "<input type='checkbox' " + (data ? "checked" : "") + " onclick='enable($(this)," + row.DT_RowId + ");'/>";
+                        return "<input type='checkbox' " + ($(data).attr('checked') ? "checked" : "") + " onclick='enable($(this)," + row.DT_RowId + ");'/>";
                     }
                     return data;
                 }

@@ -21,6 +21,15 @@ function add() {
     $("#editRow").modal();
 }
 
+function updateRow(id) {
+    $.get(ajaxUrl + id, function (data) {
+        $.each(data, function (key, value) {
+            form.find("input[name='" + key + "']").val(value);
+        });
+        $('#editRow').modal();
+    });
+}
+
 function deleteRow(id) {
     $.ajax({
         url: ajaxUrl + id,

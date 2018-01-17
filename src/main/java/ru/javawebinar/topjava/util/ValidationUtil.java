@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import ru.javawebinar.topjava.HasId;
+import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.StringJoiner;
 
 public class ValidationUtil {
@@ -59,6 +62,15 @@ public class ValidationUtil {
     }
 
     public static ResponseEntity<String> getErrorResponse(BindingResult result) {
+        return new ResponseEntity<>(getFieldErrors(result).toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    public static ResponseEntity<ErrorInfo> getErrorResponse(BindingResult result, HttpServletRequest request, ExceptionInfoHandler exceptionInfoHandler) {
+        ErrorInfo errorInfo = exceptionInfoHandler.handleError(request, new NotFoundException(getFieldErrors(result).toString()));
+        return new ResponseEntity<>(errorInfo, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    private static StringJoiner getFieldErrors(BindingResult result) {
         StringJoiner joiner = new StringJoiner("<br>");
         result.getFieldErrors().forEach(
                 fe -> {
@@ -68,6 +80,6 @@ public class ValidationUtil {
                     }
                     joiner.add(msg);
                 });
-        return new ResponseEntity<>(joiner.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+        return joiner;
     }
 }

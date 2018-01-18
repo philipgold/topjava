@@ -8,11 +8,14 @@ import ru.javawebinar.topjava.TestUtil;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.exception.ErrorInfo;
+import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -84,6 +87,22 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testUpdateArgumentNotValid() throws Exception{
+        Meal invalidMeal = getUpdated();
+        invalidMeal.setCalories(0);
+        invalidMeal.setDateTime(null);
+
+        ResultActions action = mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalidMeal))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isConflict());
+
+        ErrorInfo returned = TestUtil.readFromJson(action, ErrorInfo.class);
+        assertThat(returned.getType()).isEqualByComparingTo(ErrorType.DATA_ERROR);
+    }
+
+    @Test
     public void testCreate() throws Exception {
         Meal created = getCreated();
         ResultActions action = mockMvc.perform(post(REST_URL)
@@ -96,6 +115,21 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, created);
         assertMatch(service.getAll(ADMIN_ID), ADMIN_MEAL2, created, ADMIN_MEAL1);
+    }
+
+    @Test
+    public void testCreateArgumentNotValid() throws Exception{
+        Meal invalidMeal = getCreated();
+        invalidMeal.setCalories(0);
+        invalidMeal.setDateTime(null);
+
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalidMeal))
+                .with(userHttpBasic(ADMIN)));
+
+        ErrorInfo returned = TestUtil.readFromJson(action, ErrorInfo.class);
+        assertThat(returned.getType()).isEqualByComparingTo(ErrorType.DATA_ERROR);
     }
 
     @Test

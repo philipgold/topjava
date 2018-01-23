@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
@@ -12,6 +14,7 @@ import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.validator.UserFormValidator;
 import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +25,16 @@ import java.util.List;
 @RequestMapping("/ajax/admin/users")
 public class AdminAjaxController extends AbstractUserController {
 
-    @Autowired
-    ExceptionInfoHandler exceptionInfoHandler;
+    //@Autowired
+    //ExceptionInfoHandler exceptionInfoHandler;
+
+    @Autowired(required=true)
+    UserFormValidator userFormValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(userFormValidator);
+    }
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,17 +55,22 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @PostMapping
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorInfo> createOrUpdate(@Valid UserTo userTo, BindingResult result, HttpServletRequest request) {
+    //@ExceptionHandler(NotFoundException.class)
+    public void createOrUpdate(@Validated UserTo userTo, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
-            return ValidationUtil.getErrorResponse(result, request, exceptionInfoHandler);
+            throw new NotFoundException("TEST");
+            //return ValidationUtil.getErrorResponse(result, request, exceptionInfoHandler);
         }
+//        User existUser;
+//        if ((existUser = super.getByMail(userTo.getEmail()))!=null){
+//            //userFormValidator.validate(existUser,);
+//        }
         if (userTo.isNew()) {
             super.create(UserUtil.createNewFromTo(userTo));
         } else {
             super.update(userTo, userTo.getId());
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        //return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

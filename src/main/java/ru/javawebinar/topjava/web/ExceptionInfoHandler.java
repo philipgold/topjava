@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -30,6 +31,13 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, false, ErrorType.DATA_NOT_FOUND);
     }
 
+
+    @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorInfo handleConstraintViolationException(HttpServletRequest req, ConstraintViolationException e) {
+        return logAndGetErrorInfo(req, e, true, ErrorType.DATA_ERROR);
+    }
+
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
@@ -55,6 +63,7 @@ public class ExceptionInfoHandler {
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
         }
+
         return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
     }
 }
